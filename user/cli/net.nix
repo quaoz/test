@@ -16,7 +16,7 @@
     # network scanner
     nmap
 
-    # network load monitors
+    # network load monitor
     bandwhich
 
     # network sniffers

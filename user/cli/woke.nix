@@ -56,6 +56,7 @@
 
       ignores = [
         ".git/"
+        ".direnv/"
       ];
     };
 
@@ -91,6 +92,7 @@
     ripgrep = {
       enable = true;
       arguments = [
+        "--hidden"
         "--max-columns=150"
         "--max-columns-preview"
         "--glob=!.git/*"
@@ -99,6 +101,9 @@
     };
 
     # cd --> z
-    zoxide = {enable = true;};
+    zoxide = {
+      enable = true;
+      options = ["--cmd cd"];
+    };
   };
 }

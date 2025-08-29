@@ -12,6 +12,7 @@
     nil
     nixd
     nurl
+    nix-output-monitor
   ];
 
   programs.nix-index-database.comma.enable = true;

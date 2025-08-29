@@ -36,6 +36,14 @@ jobs:
             substituters = https://nix-community.cachix.org https://cache.nixos.org/
             trusted-public-keys = nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs= cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=
 
+      - name: Nix Cache
+        uses: DeterminateSystems/magic-nix-cache-action@v13
+
+      - name: Loosen apparmor restrictions
+        run: |
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_unconfined=0
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
+
       - name: Build Iso
         continue-on-error: false
         run: nix build -L .#nixosConfigurations.blume.config.system.build.isoImage

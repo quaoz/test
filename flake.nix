@@ -9,11 +9,6 @@
 
     # cooler nix
     lix.url = "https://git.lix.systems/lix-project/lix/archive/main.tar.gz";
-    lix-module = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/main.tar.gz";
-      inputs.nixpkgs.follows = "nixpkgs";
-      inputs.lix.follows = "lix";
-    };
 
     # better darwin support
     darwin = {
@@ -27,6 +22,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # user contributed packages (basically only used for rycee/firefox-addons)
     nur = {
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -66,6 +62,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # formatter
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -76,8 +73,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # TODO: revert once apple sdk stubs removed
+    # WATCH: https://github.com/serokell/deploy-rs/issues/322
     deploy-rs = {
-      url = "github:serokell/deploy-rs";
+      url = "git+file:/Users/ada/Projects/playground/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

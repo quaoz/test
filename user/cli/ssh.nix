@@ -3,9 +3,6 @@
 in {
   programs.ssh = {
     enable = true;
-    compression = true;
-    hashKnownHosts = true;
-    addKeysToAgent = "yes";
 
     matchBlocks = {
       "github.com" = {
@@ -21,6 +18,9 @@ in {
 
       "*" = {
         setEnv.TERM = "xterm-256colour";
+        compression = true;
+        hashKnownHosts = true;
+        addKeysToAgent = "yes";
       };
     };
   };

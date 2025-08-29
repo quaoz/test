@@ -24,8 +24,8 @@
         ];
     };
 
+    # TODO: remove overlays
     overlays = [
-      inputs.lix-module.overlays.default
       inputs.nur.overlays.default
       inputs.nixpkgs-firefox-darwin.overlay
 

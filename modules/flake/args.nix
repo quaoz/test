@@ -15,9 +15,7 @@
         allowUnsupportedSystem = true;
       };
 
-      overlays = [
-        inputs.lix-module.overlays.default
-      ];
+      overlays = [];
     };
   };
 }

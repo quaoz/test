@@ -7,7 +7,15 @@
   programs.firefox = lib.mkIf osConfig.garden.profiles.desktop.enable {
     enable = true;
 
-    package = pkgs.wrapFirefox (pkgs.firefox-nightly-bin // {applicationName = "Firefox Nightly";}) {};
+    package = pkgs.wrapFirefox (pkgs.firefox-nightly-bin.overrideAttrs {
+      applicationName = "Firefox Nightly";
+
+      # WATCH: https://github.com/bandithedoge/nixpkgs-firefox-darwin/issues/14
+      nativeBuildInputs = [pkgs.makeBinaryWrapper];
+      postInstall = ''
+        wrapProgram $out/Applications/Firefox\ Nightly.app/Contents/MacOS/firefox --set MOZ_LEGACY_PROFILES 1
+      '';
+    }) {};
 
     profiles."default" = {
       id = 0;
@@ -49,8 +57,6 @@
         zotero-connector
         # keep-sorted end
       ];
-
-      #https://noogle.dev/q?term=mkOpt
 
       search = let
         mkSearchFull = {

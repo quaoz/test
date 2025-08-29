@@ -8,10 +8,7 @@
   stylix = {
     enable = true;
 
-    # TODO: import this
-    targets.firefox.profileNames = [
-      "default"
-    ];
+    targets.firefox.profileNames = ["default"];
 
     base16Scheme = "${pkgs.base16-schemes}/share/themes/mountain.yaml";
 

@@ -27,7 +27,7 @@
 
         deadnix = {
           enable = true;
-          package = inputs'.deadnix.packages.deadnix;
+          package = inputs'.deadnix.packages.deadnix // {meta.mainProgram = "deadnix";};
         };
 
         just.enable = true;

@@ -1,0 +1,23 @@
+Amor asteroids
+
+Camarillo
+Anteros
+Ishtar
+Kadlu
+Anza
+Eros
+Cuyo
+Rhiannon
+
+Almeria - raspberry pi
+Ati     - UTM VM
+Blume   - Installer ISO
+
+Zao     - raspberry pi 02
+
+Mera    - MacBookPro14,1 (2017)
+Taranis - uncle nas vm
+
+Nyx      - MacBookPro18,2 (2021)
+Verenia  - MacPro6,1 (2013)
+Ganymede - Layer7 VPS

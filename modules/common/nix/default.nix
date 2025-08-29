@@ -2,14 +2,33 @@
   self,
   pkgs,
   inputs',
+  inputs,
+  lib,
   ...
 }: {
-  config.nix = {
+  config.nix = let
+    flakeInputs = lib.filterAttrs (n: v: lib.types.isType "flake" v && n != "self") inputs;
+  in {
     # use lix
     package = inputs'.lix.packages.nix;
 
     # disable nix channels
     channel.enable = false;
+
+    # pin registry to avoid unnecessary downloads
+    registry =
+      (lib.mapAttrs (_: flake: {inherit flake;}) flakeInputs)
+      // {
+        nixpkgs = lib.mkForce {flake = inputs.nixpkgs;};
+      };
+
+    # specify nix path
+    nixPath =
+      flakeInputs
+      |> lib.mapAttrsToList (
+        k: v: "${k}=${self.lib.onlyLinux pkgs "flake:"}${v.outPath}"
+      )
+      |> lib.mkForce;
 
     # automatic gc
     gc = {
@@ -84,9 +103,6 @@
 
           # enable nix command
           "nix-command"
-
-          # enable parsing timestamps with builtins.fromTOML
-          "parse-toml-timestamps"
 
           # enable nix pipe operator
           "pipe-operator"

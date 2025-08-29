@@ -7,6 +7,7 @@
   inherit (config.me) username pubkey;
   inherit (config.networking) hostName;
 
+  group = self.lib.ldTernary pkgs "wheel" "admin";
   secretDir = ../../secrets;
 in {
   config.age =
@@ -54,25 +55,25 @@ in {
         github = {
           rekeyFile = secretDir + "/ssh/github.age";
           owner = username;
-          group = username;
+          inherit group;
         };
 
         github-pub = {
           rekeyFile = secretDir + "/ssh/github-pub.age";
           owner = username;
-          group = username;
+          inherit group;
         };
 
         nix-remote = {
           rekeyFile = secretDir + "/ssh/nix-remote.age";
           owner = username;
-          group = username;
+          inherit group;
         };
 
         nix-remote-pub = {
           rekeyFile = secretDir + "/ssh/nix-remote-pub.age";
           owner = username;
-          group = username;
+          inherit group;
         };
       };
     }
