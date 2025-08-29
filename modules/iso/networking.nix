@@ -3,7 +3,7 @@
   config,
   ...
 }: let
-  inherit (config.garden) pubkey;
+  inherit (config.me) pubkey;
 in {
   # enable ssh
   systemd.services.sshd.wantedBy = lib.mkForce ["multi-user.target"];
