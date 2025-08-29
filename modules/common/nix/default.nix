@@ -1,0 +1,100 @@
+{
+  self,
+  pkgs,
+  inputs',
+  ...
+}: {
+  config.nix = {
+    # use lix
+    package = inputs'.lix.packages.nix;
+
+    # disable nix channels
+    channel.enable = false;
+
+    # automatic gc
+    gc = {
+      automatic = true;
+      options = "--delete-older-than 3d";
+    };
+
+    # https://docs.lix.systems/manual/lix/nightly/command-ref/conf-file.html#available-settings
+    settings = let
+      trusted = self.lib.ldTernary pkgs ["@wheel"] ["@admin"];
+    in
+      {
+        # don't automatically accept nix config from flakes (depends: flakes)
+        accept-flake-config = false;
+
+        # users allowed to interact with nix daemon
+        allowed-users = trusted;
+        # users allowed to manage the nix store
+        trusted-users = trusted;
+
+        # automatically pick UIDs for builds (depends: auto-allocate-uids)
+        auto-allocate-uids = pkgs.stdenv.isLinux;
+
+        # let nix replace duplicate store files with links
+        # broken on darwin but fixed by lix
+        auto-optimise-store = true;
+
+        # let remote builders use their own binary substitutes
+        builders-use-substitutes = true;
+
+        # max number of parallel connections to use
+        http-connections = 50;
+
+        # don't stop building if a build fails
+        keep-going = true;
+
+        # show more lines when a build fails
+        log-lines = 35;
+
+        # automatically decide the max number of jobs
+        max-jobs = "auto";
+
+        # free up to 20GiB when under 5GiB left
+        max-free = 20 * 1024 * 1024 * 1024;
+        min-free = 5 * 1024 * 1024 * 1024;
+
+        # use sandbox on linux
+        sandbox = pkgs.stdenv.isLinux;
+
+        # use xdg directories for nix stuff
+        use-xdg-base-directories = true;
+
+        # don't warn about dirty git tree
+        warn-dirty = false;
+
+        # https://docs.lix.systems/manual/lix/nightly/contributing/experimental-features.html
+        experimental-features = [
+          # lets nix automatically pick UIDs for builds instead of creating nixbld accounts
+          "auto-allocate-uids"
+
+          # lets nix execute builds inside cgroups
+          "cgroups"
+
+          # enable fetch-closure builtin
+          "fetch-closure"
+
+          # enable flakes
+          "flakes"
+
+          # lets lix invoke custom commands through its main binary
+          "lix-custom-sub-commands"
+
+          # enable nix command
+          "nix-command"
+
+          # enable parsing timestamps with builtins.fromTOML
+          "parse-toml-timestamps"
+
+          # enable nix pipe operator
+          "pipe-operator"
+        ];
+      }
+      // self.lib.onlyLinux pkgs {
+        # use cgroups on linux (depends: cgroups)
+        use-cgroups = true;
+      };
+  };
+}

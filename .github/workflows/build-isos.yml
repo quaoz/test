@@ -1,0 +1,41 @@
+name: Build and Release ISO Images
+
+on:
+  workflow_dispatch:
+
+permissions:
+  attestations: write
+  contents: write
+
+jobs:
+  build-isos:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Maximize Space
+        uses: easimon/maximize-build-space@v10
+        with:
+          overprovision-lvm: true
+          remove-android: true
+          remove-dotnet: true
+          remove-codeql: true
+          remove-haskell: true
+          remove-docker-images: true
+
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install Lix
+        uses: canidae-solutions/lix-quick-install-action@v3
+
+      - name: Build Iso
+        continue-on-error: false
+        run: nix build -L .#nixosConfigurations.blume.config.system.build.isoImage
+
+      - name: Upload Release Artifacts
+        run: |
+          release=$(date +"%Y-%m-%d")
+          gh release create "$release"
+          gh release upload "$release" ./result/iso/*.iso
+        env:
+          GH_TOKEN: ${{ github.token }}
