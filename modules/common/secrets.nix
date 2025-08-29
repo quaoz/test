@@ -53,18 +53,26 @@ in {
 
         github = {
           rekeyFile = secretDir + "/ssh/github.age";
+          owner = username;
+          group = username;
         };
 
         github-pub = {
           rekeyFile = secretDir + "/ssh/github-pub.age";
+          owner = username;
+          group = username;
         };
 
         nix-remote = {
           rekeyFile = secretDir + "/ssh/nix-remote.age";
+          owner = username;
+          group = username;
         };
 
         nix-remote-pub = {
           rekeyFile = secretDir + "/ssh/nix-remote-pub.age";
+          owner = username;
+          group = username;
         };
       };
     }
