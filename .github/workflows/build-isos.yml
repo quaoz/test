@@ -50,8 +50,9 @@ jobs:
 
       - name: Upload Release Artifacts
         run: |
+          rev=$(nix eval --raw .#nixosConfigurations.blume.config.system.configurationRevision)
           release=$(date +"%Y-%m-%d")
-          gh release create "$release"
-          gh release upload "$release" ./result/iso/*.iso
+          gh release create "$release-$rev"
+          gh release upload "$release-$rev" ./result/iso/*.iso
         env:
           GH_TOKEN: ${{ github.token }}

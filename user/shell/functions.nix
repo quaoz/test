@@ -3,6 +3,7 @@
   pkgs,
   ...
 }: let
+  # TODO: some of these don't work on zsh and should probably be refactored into scripts
   functions = ''
     mkcd() {
         mkdir -p "$@" && cd "$_";
@@ -23,8 +24,6 @@
         local path=$(nix-instantiate --eval-only --expr '(import <nixpkgs> { system = "'"''${2:-${pkgs.stdenv.hostPlatform.system}}"'"; }).'"$1"'.outPath' 2> /dev/null)
         echo "''${path:1:-1}"
     }
-
-
 
     cache-has() {
         local system
@@ -56,7 +55,7 @@
         set -- "''${pargs[@]}"
 
         local hash=$(store-path "$1" $system | ${lib.getExe pkgs.choose} -f '/|-' 2)
-        if [ ${lib.getExe pkgs.curl} --output /dev/null --silent --head --fail "https://''${2-cache.nixos.org}/$hash.narinfo" ]; then
+        if ${lib.getExe pkgs.curl} --output /dev/null --silent --head --fail "https://''${2-cache.nixos.org}/$hash.narinfo"; then
             echo yes
             return 0
         else
