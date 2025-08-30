@@ -17,5 +17,5 @@ writeShellApplication {
     nixos-install-tools
   ];
 
-  text = builtins.readFile ./evil.sh;
+  text = builtins.readFile ./easy-install.sh;
 }
