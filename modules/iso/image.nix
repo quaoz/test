@@ -22,7 +22,7 @@ in {
     volumeID = lib.mkImageMediaOverride name;
 
     # maximum compression
-    squashfsCompression = "zstd -Xcompression-level 19";
+    # squashfsCompression = "zstd -Xcompression-level 19";
 
     # remove "-installer" boot menu label
     appendToMenuLabel = "";
