@@ -52,6 +52,12 @@ in {
           rekeyFile = secretDir + "/nix/nix-signing-key-pub.age";
         };
 
+        password = {
+          rekeyFile = secretDir + "/password.age";
+          owner = username;
+          inherit group;
+        };
+
         github = {
           rekeyFile = secretDir + "/ssh/github.age";
           owner = username;

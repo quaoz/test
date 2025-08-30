@@ -21,9 +21,6 @@ in {
     # volumeID is used is used by stage 1 of the boot process, so it must be distintctive
     volumeID = lib.mkImageMediaOverride name;
 
-    # maximum compression
-    squashfsCompression = "zstd -Xcompression-level 19";
-
     # remove "-installer" boot menu label
     appendToMenuLabel = "";
 

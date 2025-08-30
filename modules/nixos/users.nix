@@ -1,24 +1,37 @@
 {config, ...}: let
   inherit (config.me) username;
+  inherit (config.age) secrets;
 
   ifGroupsExist = builtins.filter (g: builtins.hasAttr g config.users.groups);
 in {
-  config.users.users.${username} = {
-    name = username;
-    uid = 1000;
+  config.users = {
+    mutableUsers = false;
 
-    home = "/home/${username}";
-    shell = "/run/current-system/sw/bin/bash";
+    users = {
+      root = {
+        hashedPasswordFile = secrets.password.path;
+      };
 
-    isNormalUser = true;
-    isSystemUser = false;
+      ${username} = {
+        name = username;
+        uid = 1000;
 
-    extraGroups =
-      [
-        "wheel"
-      ]
-      ++ ifGroupsExist [
-        "networkmanager"
-      ];
+        home = "/home/${username}";
+        shell = "/run/current-system/sw/bin/bash";
+
+        isNormalUser = true;
+        isSystemUser = false;
+
+        hashedPasswordFile = secrets.password.path;
+
+        extraGroups =
+          [
+            "wheel"
+          ]
+          ++ ifGroupsExist [
+            "networkmanager"
+          ];
+      };
+    };
   };
 }

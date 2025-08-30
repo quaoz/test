@@ -23,12 +23,10 @@
       };
 
     # specify nix path
-    nixPath =
-      flakeInputs
-      |> lib.mapAttrsToList (
-        k: v: "${k}=${self.lib.onlyLinux pkgs "flake:"}${v.outPath}"
-      )
-      |> lib.mkForce;
+    nixPath = lib.mapAttrsToList (
+      k: v: "${k}=${self.lib.onlyLinux pkgs "flake:"}${v.outPath}"
+    )
+    flakeInputs;
 
     # automatic gc
     gc = {

@@ -3,6 +3,11 @@
   pkgs,
   ...
 }: {
+  # enable systemd boot
+  imports = [
+    ../nixos/boot/systemd.nix
+  ];
+
   boot = {
     # use latest kernel
     kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
