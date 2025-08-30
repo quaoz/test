@@ -8,8 +8,8 @@
         # https://search.nixos.org/options?channel=unstable&show=boot.loader.systemd-boot.editor
         editor = false;
 
-        # only keep last 16 generations
-        configurationLimit = 16;
+        # only keep last 8 generations
+        configurationLimit = 8;
 
         # use largest available console resolution
         consoleMode = "max";

@@ -6,7 +6,7 @@
   osConfig,
   ...
 }: let
-  inherit (osConfig.users.users.${config.me.username}) shell;
+  inherit (osConfig.users.users.${osConfig.me.username}) shell;
 
   mkIfEnabled = program: content:
     lib.mkIf (self.lib.isEnabled config program) content;
