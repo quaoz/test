@@ -76,8 +76,7 @@
     # TODO: revert once apple sdk stubs removed
     # WATCH: https://github.com/serokell/deploy-rs/issues/322
     deploy-rs = {
-      #url = "git+file:/Users/ada/Projects/playground/deploy-rs";
-      url = "github:serokell/deploy-rs";
+      url = "github:quaoz/deploy-rs";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 

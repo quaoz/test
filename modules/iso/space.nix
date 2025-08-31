@@ -7,7 +7,7 @@
 in {
   imports = [
     (inputs.nixpkgs.outPath + "/nixos/modules/profiles/headless.nix")
-    (inputs.nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
+    #(inputs.nixpkgs.outPath + "/nixos/modules/profiles/perlless.nix")
   ];
 
   # disable documentation
