@@ -6,7 +6,7 @@
     tools = {
       nixos-enter.enable = true;
       nixos-install.enable = true;
-      nixos-generate-config.enable = true;
+      #nixos-generate-config.enable = true;
     };
   };
 

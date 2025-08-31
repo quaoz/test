@@ -18,6 +18,7 @@ if [[ $(nmcli networking connectivity check) != "full" ]]; then
         gateway=$(gum input --header "Enter gateway" --value "${ipaddr%.*}.1")
 
         nmcli con add con-name "installer-con-${ifname}" ifname "$ifname" ipv4.addresses "$ipaddr/$ipcidr" ipv4.gateway "$gateway" ipv4.dns "9.9.9.9" ipv4.method "manual" type "ethernet"
+        nmcli con up "installer-con-${ifname}"
     fi
 
     if [[ $(nmcli networking connectivity check) != "full" ]]; then
@@ -62,25 +63,28 @@ mount "$root_part" /mnt
 mkdir -p /mnt/boot
 mount "$boot_part" /mnt/boot
 
+# lazy
+git clone https://github.com/quaoz/flake.git /mnt/etc/nixos
+
 # copy across the iso's nixos flake to the target system
-mkdir -p /mnt/etc/nixos
-cp -rT /iso/flake /mnt/etc/nixos
+# mkdir -p /mnt/etc/nixos
+# cp -rT /iso/flake /mnt/etc/nixos
 
 # even if we don't need a new host we are going to have to generate a new hardware config
-nixos-generate-config --root /mnt --show-hardware-config >/mnt/etc/nixos/hosts/"$hostname"/hardware.nix
+# nixos-generate-config --root /mnt --show-hardware-config >/mnt/etc/nixos/hosts/"$hostname"/hardware.nix
 
 # setup the git repository for the nixos configuration
-git -C /mnt/etc/nixos init
-git -C /mnt/etc/nixos remote add origin ssh://git@github.com/quaoz/flake.git
-(
-    git -C /mnt/etc/nixos fetch &&
-        git -C /mnt/etc/nixos reset "origin/HEAD" &&
-        git -C /mnt/etc/nixos branch --set-upstream-to=origin/main main
-) || true
+# git -C /mnt/etc/nixos init
+# git -C /mnt/etc/nixos remote add origin https://github.com/quaoz/flake.git
+# (
+#     git -C /mnt/etc/nixos fetch &&
+#         git -C /mnt/etc/nixos reset "origin/HEAD" &&
+#         git -C /mnt/etc/nixos branch --set-upstream-to=origin/main main
+# ) || true
 
 # create some ssh keys with no passphrases
 mkdir -p /mnt/etc/ssh
-ssh-keygen -t ed25519 -f /mnt/etc/ssh/ssh_host_ed25519_key -N ""
+ssh-keygen -t ed25519 -f /mnt/etc/ssh/ssh_host_ed25519_key -N "" -C ""
 gum format --type template "{{ Bold \"pubkey\" }}: {{ Faint \"$(cat /mnt/etc/ssh/ssh_host_ed25519_key.pub)\" }}"
 
 # setup our installer args based off of our configuration
