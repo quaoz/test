@@ -11,7 +11,7 @@
 
     cheat() {
         local combined="''${@}"
-        ${lib.getExe pkgs.curl} cheat.sh/''${combined// /-};
+        ${lib.getExe pkgs.curl} cheat.sh/"''${combined// /-}";
     }
 
     swap() {
@@ -30,7 +30,7 @@
         local cache
         local pargs=()
         while [[ $# -gt 0 ]]; do
-            case $1 in
+            case "$1" in
                 -c|--cache)
                     cache="$2"
                     shift

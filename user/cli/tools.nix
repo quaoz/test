@@ -6,5 +6,6 @@
     rsync
     tree
     unzip
+    gum
   ];
 }

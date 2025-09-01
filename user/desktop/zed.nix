@@ -8,33 +8,23 @@
   zed-exe = lib.getExe config.programs.zed-editor.package;
 in {
   config = lib.mkIf osConfig.garden.profiles.desktop.enable {
-    # use zed as the default editor
-    home.sessionVariables.EDITOR = "${zed-exe} --wait";
-
     programs.zed-editor = {
       enable = true;
 
       extensions = [
-        "assembly"
+        # keep-sorted start
         "basher"
-        "docker-compose"
         "git-firefly"
         "haskell"
         "html"
         "just"
-        "just-ls"
         "log"
         "make"
         "nix"
         "scss"
         "toml"
         "wakatime"
-      ];
-
-      extraPackages = with pkgs; [
-        alejandra
-        shellcheck
-        shfmt
+        # keep-sorted end
       ];
 
       userKeymaps = [
@@ -49,7 +39,7 @@ in {
           # vim::NormalBefore but this can't be done at the moment (cmd-s and ctrl-c
           # map to these two actions respectively).
           #
-          # See: https://github.com/zed-industries/zed/issues/7274
+          # WATCH: https://github.com/zed-industries/zed/issues/7274
           context = "Editor && vim_mode == insert && !menu";
           bindings = {
             escape = [
@@ -68,45 +58,34 @@ in {
         # don't try and update
         auto_update = false;
 
-        minimap = {
-          show = "auto";
-          thumb = "always";
-          thumb_border = "left_open";
+        buffer_font_size = lib.mkForce 14;
+        ui_font_size = lib.mkForce 14;
+
+        edit_predictions = {
+          mode = "subtle";
         };
 
-        lsp = {
-          nil = {
-            initialisation_options = {
-              # use alejandra to format nix
-              formatting = {
-                command = ["${lib.getExe pkgs.alejandra}" "--quiet" "--"];
+        languages = {
+          Nix = {
+            language_servers = [
+              "nil"
+              "!nixd"
+            ];
+            formatter = {
+              external = {
+                command = "${lib.getExe pkgs.alejandra}";
+                arguments = ["--" "--quiet"];
               };
             };
           };
         };
 
-        languages = {
-          python = {
-            # https://docs.astral.sh/ruff/editors/setup/#zed
-            language_servers = [
-              "ruff"
-            ];
-            format_on_save = "on";
-            formatter = [
-              {
-                code_actions = {
-                  "source.organiseImports.ruff" = true;
-                  "source.fixAll.ruff" = true;
-                };
-              }
-              {
-                language_server.name = "ruff";
-              }
-            ];
-          };
-          javascript = {
-            tab_size = 4;
-          };
+        # always use relative line numbers
+        relative_line_numbers = true;
+
+        # enable regex in search by default
+        search = {
+          regex = true;
         };
 
         # show line at 80 characters
@@ -118,16 +97,10 @@ in {
           metrics = false;
         };
 
-        # always use relative line numbers
-        relative_line_numbers = true;
-
         # show tab file icons
         tabs = {
           file_icons = true;
         };
-
-        buffer_font_size = lib.mkForce 14;
-        ui_font_size = lib.mkForce 14;
 
         terminal = {
           env = {
@@ -136,6 +109,8 @@ in {
         };
 
         vim_mode = true;
+        # TODO: helix
+        # helix_mode = true;
       };
     };
   };

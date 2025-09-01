@@ -1,6 +1,7 @@
 {
   gum,
   vim,
+  disko,
   parted,
   writeShellApplication,
 }:
@@ -11,6 +12,7 @@ writeShellApplication {
     gum
     vim
     parted
+    disko
   ];
 
   text = builtins.readFile ./easy-install.sh;

@@ -46,7 +46,6 @@ in {
 
     hosts = {
       # keep-sorted start block=yes newline_separated=yes
-
       blume = {
         class = "iso";
       };
@@ -61,6 +60,10 @@ in {
         class = "nixos";
       };
 
+      ganymede = {
+        arch = "x86_64";
+        class = "nixos";
+      };
       # keep-sorted end
     };
   };

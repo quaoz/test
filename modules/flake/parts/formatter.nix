@@ -23,6 +23,8 @@
 
       programs = {
         # keep-sorted start block=yes newline_separated=yes
+        actionlint.enable = true;
+
         alejandra.enable = true;
 
         deadnix = {

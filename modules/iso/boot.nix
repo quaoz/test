@@ -27,7 +27,6 @@
     supportedFilesystems = lib.mkForce [
       "btrfs"
       "vfat"
-      "ntfs"
     ];
   };
 }
