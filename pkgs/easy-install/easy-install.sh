@@ -41,10 +41,10 @@ fi
 hostname=$(gum input --header "Enter hostname" --value "$(hostname)")
 
 use_disko=false
-if nix eval "$FLAKE_URL#nixosConfigurations.$hostname.config" --apply 'builtins.hasAttr "disko"' == "true"; then
-    if nix eval "$FLAKE_URL#nixosConfigurations.$hostname.config.disko.devices.disk" --apply 'x: x != {}' == "true"; then
+if [[ "$(nix eval "$FLAKE_URL#nixosConfigurations.$hostname.config" --apply 'builtins.hasAttr "disko"')" == "true" ]]; then
+    if [[ "$(nix eval "$FLAKE_URL#nixosConfigurations.$hostname.config.disko.devices.disk" --apply 'x: x != {}')" == "true" ]]; then
         use_disko=true
-    elif ! gum confirm "$hostname has empty disko configuration. Procede with manual formatting?"; then
+    elif ! gum confirm "$hostname has empty disko configuration. Proceed with manual formatting?"; then
         exit 0
     fi
 fi

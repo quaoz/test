@@ -50,17 +50,17 @@ in {
         class = "iso";
       };
 
+      ganymede = {
+        arch = "x86_64";
+        class = "nixos";
+      };
+
       nyx = {
         arch = "aarch64";
         class = "darwin";
       };
 
       verenia = {
-        arch = "x86_64";
-        class = "nixos";
-      };
-
-      ganymede = {
         arch = "x86_64";
         class = "nixos";
       };

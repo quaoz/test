@@ -1,6 +1,5 @@
 {
   lib,
-  inputs,
   ...
 }: let
   inherit (lib) mkForce mkDefault;
