@@ -11,9 +11,4 @@
 
   # we only need a basic git install
   programs.git.package = pkgs.gitMinimal;
-
-  environment.systemPackages = [
-    # installation helper script
-    pkgs.easy-install
-  ];
 }
