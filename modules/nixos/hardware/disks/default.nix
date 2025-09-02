@@ -51,6 +51,7 @@ in {
 
               root = {
                 label = "root";
+                priority = 2;
                 end = "-${cfg.partitions.swap.size}";
                 content = {
                   type = "btrfs";
@@ -82,7 +83,8 @@ in {
 
               swap = {
                 label = "swap";
-                end = "100%";
+                priority = 3;
+                size = "100%";
                 content = {
                   type = "swap";
                   randomEncryption = true;
