@@ -5,13 +5,13 @@ set -euxo pipefail
 # alternatively use '/iso/flake' to install based of the flake when the iso was created
 FLAKE_URL="github:quaoz/flake"
 
-gum format --type markdown "# This script _will_ make irrevocable and destructive changes to your system."
-gum confirm --default=no "Are you sure you want to continue?" || exit 0
-
 # check for root
 if [[ $EUID -ne 0 ]]; then
     exec sudo "$0"
 fi
+
+gum format --type markdown "# This script _will_ make irrevocable and destructive changes to your system."
+gum confirm --default=no "Are you sure you want to continue?" || exit 0
 
 # check network connection
 if [[ $(nmcli networking connectivity check) != "full" ]]; then
@@ -50,7 +50,7 @@ if [[ "$(nix eval "$FLAKE_URL#nixosConfigurations.$hostname.config" --apply 'bui
 fi
 
 if $use_disko; then
-    disko --mode "destroy,format,mount" --flake "$FLAKE_URL#nixosConfigurations.$hostname"
+    eval "$(nix build --no-link --print-out-paths "$FLAKE_URL#nixosConfigurations.$hostname.config.system.build.diskoScript")"
 else
     drive=$(lsblk -nlo PATH | gum choose --header "Select drive to install to")
 

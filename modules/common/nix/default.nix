@@ -40,7 +40,7 @@
       trusted = self.lib.ldTernary pkgs ["@wheel"] ["@admin"];
     in
       {
-        # don't automatically accept nix config from flakes (depends: flakes)
+        # don't automatically accept nix config from flakes
         accept-flake-config = false;
 
         # users allowed to interact with nix daemon

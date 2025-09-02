@@ -51,7 +51,6 @@ in {
 
               root = {
                 label = "root";
-                start = cfg.partitions.boot.size;
                 end = "-${cfg.partitions.swap.size}";
                 content = {
                   type = "btrfs";
@@ -83,7 +82,6 @@ in {
 
               swap = {
                 label = "swap";
-                start = cfg.partitions.swap.size;
                 end = "100%";
                 content = {
                   type = "swap";
