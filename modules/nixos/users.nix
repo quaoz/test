@@ -4,7 +4,9 @@
 
   ifGroupsExist = builtins.filter (g: builtins.hasAttr g config.users.groups);
 in {
-  config.users = {
+  config = {
+
+    users = {
     mutableUsers = false;
 
     users = {
@@ -32,6 +34,6 @@ in {
             "networkmanager"
           ];
       };
-    };
+    };};
   };
 }

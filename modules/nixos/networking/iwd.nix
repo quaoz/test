@@ -1,39 +1,53 @@
 {
-  # enable wireless database
-  hardware.wirelessRegulatoryDatabase = true;
+  lib,
+  config,
+  ...
+}: let
+  cfg = config.garden.system.networking.wireless;
+in {
+  options.garden.system.networking.wireless.enable =
+    lib.mkEnableOption "Wireless networking"
+    // {
+      default = true;
+    };
 
-  networking = {
-    # use iwd as the wifi backend
-    networkmanager.wifi.backend = "iwd";
+  config = {
+    # enable wireless database
+    hardware.wirelessRegulatoryDatabase = cfg.enable;
 
-    wireless = {
-      # disable wpa_supplicant
-      enable = false;
+    networking = {
+      # use iwd as the wifi backend
+      networkmanager.wifi.backend = "iwd";
 
-      # use iwd instead
-      iwd = {
-        enable = true;
+      wireless = {
+        # disable wpa_supplicant
+        enable = false;
 
-        # https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.network.rst
-        # https://www.mankier.com/5/iwd.config
-        settings = {
-          Settings = {
-            # autoconnect to networks
-            AutoConnect = true;
-          };
+        # use iwd instead
+        iwd = {
+          enable = cfg.enable;
 
-          General = {
-            # randomize full mac address on each connection
-            AddressRandomization = "network";
-            AddressRandomizationRange = "full";
+          # https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.network.rst
+          # https://www.mankier.com/5/iwd.config
+          settings = {
+            Settings = {
+              # autoconnect to networks
+              AutoConnect = true;
+            };
 
-            # let iwd configure network interfaces
-            EnableNetworkConfiguration = true;
-          };
+            General = {
+              # randomize full mac address on each connection
+              AddressRandomization = "network";
+              AddressRandomizationRange = "full";
 
-          Network = {
-            # enable ipv6
-            EnableIPv6 = true;
+              # let iwd configure network interfaces
+              EnableNetworkConfiguration = true;
+            };
+
+            Network = {
+              # enable ipv6
+              EnableIPv6 = true;
+            };
           };
         };
       };

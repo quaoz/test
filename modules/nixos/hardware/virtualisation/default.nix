@@ -1,10 +1,13 @@
-{
-  lib,
-  self,
-  ...
-}: {
+{lib, ...}: {
   options.garden.hardware.virtualisation = {
-    mode = self.lib.mkOpt (lib.types.nullOr (lib.types.enum ["qemu"])) null "The system virtualisation mode";
+    qemu = {
+      enable = lib.mkEnableOption "QEMU";
+      guestAgent.enable =
+        lib.mkEnableOption "QEMU guest agent"
+        // {
+          default = true;
+        };
+    };
 
     scsi.enable = lib.mkEnableOption "Virtio SCSI module";
   };

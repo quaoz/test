@@ -5,7 +5,9 @@
 }: let
   cfg = config.garden.hardware.virtualisation;
 in {
-  config = lib.mkIf (cfg.mode == "qemu") {
+  config = lib.mkIf cfg.qemu.enable {
+    services.qemuGuest.enable = cfg.qemu.guestAgent.enable;
+
     boot.initrd = {
       availableKernelModules = [
         "virtio_net"

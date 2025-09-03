@@ -21,11 +21,16 @@ in {
         slow.enable = mkEnableOption "Slow";
       };
 
-      # defined elsewhere
+      # hardware configuration, see: modules/nixos/hardware
       hardware = {};
 
-      # defined elsewhere
+      # services, see: modules/{nixos,darwin}/services
       services = {};
+
+      system = {
+        # networking configuration, see modules/nixos/networking
+        networking = {};
+      };
     };
   };
 

@@ -4,11 +4,15 @@
 
     profiles.server.enable = true;
 
+    system.networking.wireless.enable = false;
+
     hardware = {
       cpu = "intel";
 
       virtualisation = {
-        mode = "qemu";
+        qemu = {
+          enable = true;
+        };
       };
 
       disks = {
