@@ -1,6 +1,6 @@
 {lib, ...}: let
   /**
-  recursively list all nix files in a directory, excludes paths begining with
+  recursively list all nix files in a directory, excludes paths beginning with
   an underscore
 
   if given a file instead of a directory it will return a list of nix files in
@@ -28,7 +28,7 @@
 
   /**
   recursively list all nix files in a directory, excludes specified paths and
-  paths begining with an underscore
+  paths beginning with an underscore
 
   if given a file instead of a directory it will return a list of nix files in
   the same directory as the file excluding the file

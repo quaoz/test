@@ -13,7 +13,7 @@ in {
         extraArgs = ["-f"];
       }
       // (
-        if cfg.impermenance.enable
+        if cfg.impermanence.enable
         then {
           # create an empty snapshot
           postCreateHook = ''

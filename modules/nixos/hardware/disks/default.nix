@@ -14,7 +14,7 @@ in {
     enable = mkEnableOption "Default disk configuration";
     device = mkOpt' types.str "The device to format and partition";
 
-    impermenance.enable = mkEnableOption "BTRFS setup for impermenance";
+    impermanence.enable = mkEnableOption "BTRFS setup for impermanence";
 
     partitions = {
       boot.size = mkOpt types.str "512M" "The size of the boot partition";
