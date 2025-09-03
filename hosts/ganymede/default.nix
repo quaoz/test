@@ -17,6 +17,7 @@
 
       disks = {
         enable = true;
+        impermanence.enable = true;
         device = "/dev/vda";
       };
     };

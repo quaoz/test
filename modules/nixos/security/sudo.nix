@@ -5,5 +5,10 @@
 
     # only allow members of the wheel group to execute sudo
     execWheelOnly = true;
+
+    # shush
+    extraConfig = ''
+      Defaults lecture = never
+    '';
   };
 }

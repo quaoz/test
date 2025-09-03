@@ -39,6 +39,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    impermanence.url = "github:nix-community/impermanence";
+
     # glue
     flake-parts = {
       url = "github:hercules-ci/flake-parts";

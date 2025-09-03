@@ -104,7 +104,7 @@ in {
 
         terminal = {
           env = {
-            EDITOR = "${zed-exe} --wait";
+            EDITOR = "${zed-exe} --wait --add";
           };
         };
 

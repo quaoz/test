@@ -12,7 +12,7 @@ in {
   home.sessionVariables = {
     EDITOR =
       if zed.enable
-      then "${lib.getExe zed.package} --wait"
+      then "${lib.getExe zed.package} --wait --new"
       else "${pkgs.vim}";
 
     FLAKE = "${home}/.config/flake";

@@ -18,7 +18,9 @@ in {
       "..." = "cd ../..";
       "...." = "cd ../../..";
       "....." = "cd ../../../..";
+
       "flake" = "cd \"$FLAKE\"";
+      "nipl" = ":q";
 
       ":q" = "exit";
       "reload" = "exec ${shell} -l";

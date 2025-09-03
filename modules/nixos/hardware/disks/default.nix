@@ -14,6 +14,8 @@ in {
     enable = mkEnableOption "Default disk configuration";
     device = mkOpt' types.str "The device to format and partition";
 
+    impermenance.enable = mkEnableOption "BTRFS setup for impermenance";
+
     partitions = {
       boot.size = mkOpt types.str "512M" "The size of the boot partition";
       swap.size = mkOpt types.str "8G" "The size of the swap partition";
@@ -31,67 +33,7 @@ in {
 
           content = {
             type = "gpt";
-            partitions = {
-              ESP = {
-                label = "boot";
-                priority = 1;
-                start = "1M";
-                end = cfg.partitions.boot.size;
-                type = "EF00";
-                content = {
-                  type = "filesystem";
-                  format = "vfat";
-                  mountpoint = "/boot";
-                  mountOptions = [
-                    "fmask=0022"
-                    "dmask=0022"
-                  ];
-                };
-              };
-
-              root = {
-                label = "root";
-                priority = 2;
-                end = "-${cfg.partitions.swap.size}";
-                content = {
-                  type = "btrfs";
-                  extraArgs = ["-f"];
-                  subvolumes = {
-                    "/root" = {
-                      mountOptions = ["compress=zstd" "noatime"];
-                      mountpoint = "/";
-                    };
-                    "/home" = {
-                      mountOptions = ["compress=zstd"];
-                      mountpoint = "/home";
-                    };
-                    "/nix" = {
-                      mountOptions = ["compress=zstd" "noatime"];
-                      mountpoint = "/nix";
-                    };
-                    "/persist" = {
-                      mountOptions = ["compress=zstd" "noatime"];
-                      mountpoint = "/persist";
-                    };
-                    "/log" = {
-                      mountOptions = ["compress=zstd" "noatime"];
-                      mountpoint = "/var/log";
-                    };
-                  };
-                };
-              };
-
-              swap = {
-                label = "swap";
-                priority = 3;
-                size = "100%";
-                content = {
-                  type = "swap";
-                  randomEncryption = true;
-                  resumeDevice = true;
-                };
-              };
-            };
+            partitions = self.lib.harvest {inherit config;} ./_partitions;
           };
         };
       };

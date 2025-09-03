@@ -74,6 +74,10 @@
         max-free = 20 * 1024 * 1024 * 1024;
         min-free = 5 * 1024 * 1024 * 1024;
 
+        repl-overlays = [
+          ./repl-overlay.nix
+        ];
+
         # use sandbox on linux
         sandbox = pkgs.stdenv.isLinux;
 

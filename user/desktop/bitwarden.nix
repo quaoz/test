@@ -10,7 +10,7 @@ in {
   home = lib.mkIf osConfig.garden.profiles.desktop.enable {
     packages = with pkgs; [
       bitwarden-desktop
-      # TODO: re-enable once https://github.com/NixOS/nixpkgs/issues/339576 is resolved
+      # WATCH: https://github.com/NixOS/nixpkgs/issues/339576
       # bitwarden-cli
     ];
 

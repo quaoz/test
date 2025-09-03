@@ -1,8 +1,10 @@
 {lib, ...}: let
   /**
-  recursively list all nix files in a directory, if given a file instead of a
-  directory it will return a list of nix files in the same directory as the
-  file excluding the file
+  recursively list all nix files in a directory, excludes paths begining with
+  an underscore
+
+  if given a file instead of a directory it will return a list of nix files in
+  the same directory as the file excluding the file
 
   # Inputs
 
@@ -22,13 +24,14 @@
   => [ ./flake.nix ./nix/other.nix ]
   ```
   */
-  nixFiles = p:
-    if builtins.readFileType p == "directory"
-    then nixFiles' p []
-    else nixFiles' (builtins.dirOf p) [p];
+  nixFiles = p: nixFiles' p [];
 
   /**
-  recursively list all nix files in a directory excluding the specified path(s)
+  recursively list all nix files in a directory, excludes specified paths and
+  paths begining with an underscore
+
+  if given a file instead of a directory it will return a list of nix files in
+  the same directory as the file excluding the file
 
   # Inputs
 
@@ -49,8 +52,23 @@
   ```
   */
   nixFiles' = p: excludes:
-    lib.filesystem.listFilesRecursive p
-    |> builtins.filter (f: lib.hasSuffix ".nix" f && builtins.all (e: !lib.path.hasPrefix e f) excludes);
+    if builtins.readFileType p == "directory"
+    then nixFilesInternal' p excludes
+    else nixFilesInternal' (builtins.dirOf p) ([p] ++ excludes);
+
+  nixFilesInternal' = dir: excludes:
+    builtins.readDir dir
+    |> lib.filterAttrs (
+      n: v: !lib.hasPrefix "_" n && !builtins.elem (dir + "/${n}") excludes
+    )
+    |> lib.mapAttrsToList (
+      name: type:
+        if type == "directory"
+        then nixFiles' (dir + "/${name}") excludes
+        else dir + "/${name}"
+    )
+    |> lib.flatten
+    |> builtins.filter (f: lib.hasSuffix ".nix" f);
 
   /**
   imports a nix file automatically providing the necessary inputs
@@ -113,6 +131,5 @@
     |> builtins.map (autoImport inputs)
     |> builtins.foldl' lib.recursiveUpdate {};
 in {
-  # the only place harvest (and autoImport) are used is when loading the lib (../default.nix)
   inherit nixFiles nixFiles' autoImport harvest;
 }
