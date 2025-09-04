@@ -59,7 +59,7 @@
   nixFilesInternal' = dir: excludes:
     builtins.readDir dir
     |> lib.filterAttrs (
-      n: v: !lib.hasPrefix "_" n && !builtins.elem (dir + "/${n}") excludes
+      n: _v: !lib.hasPrefix "_" n && !builtins.elem (dir + "/${n}") excludes
     )
     |> lib.mapAttrsToList (
       name: type:

@@ -25,7 +25,7 @@ in {
 
         # use iwd instead
         iwd = {
-          enable = cfg.enable;
+          inherit (cfg) enable;
 
           # https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.network.rst
           # https://www.mankier.com/5/iwd.config

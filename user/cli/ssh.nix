@@ -2,7 +2,6 @@
   osConfig,
   self,
   lib,
-  config,
   ...
 }: let
   inherit (osConfig.age) secrets;

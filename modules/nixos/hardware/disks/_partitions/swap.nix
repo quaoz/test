@@ -1,4 +1,4 @@
-{...}: {
+_: {
   swap = {
     label = "swap";
     priority = 3;

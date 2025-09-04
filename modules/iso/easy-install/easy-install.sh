@@ -90,7 +90,6 @@ fi
 # create some ssh keys with no passphrases
 mkdir -p /mnt/etc/ssh
 ssh-keygen -t ed25519 -f /mnt/etc/ssh/ssh_host_ed25519_key -N "" -C ""
-gum format --type template "{{ Bold \"pubkey\" }}: {{ Faint \"$(cat /mnt/etc/ssh/ssh_host_ed25519_key.pub)\" }}"
 
 # setup our installer args based off of our configuration
 # this is concept is taken from https://github.com/lilyinstarlight/foosteros/blob/0d40c72ac4e81c517a7aa926b2a1fb4389124ff7/installer/default.nix
@@ -102,6 +101,7 @@ fi
 gum format --type markdown <<EOF
 Before installing you probably want to rekey your secrets and check the hardware configuration.
 > pubkey: $(cat /mnt/etc/ssh/ssh_host_ed25519_key.pub)
+
 When you are ready to install, run the following command:
 EOF
 gum format --type code --language sh "nixos-install --flake \"$FLAKE_URL#$hostname\" \"${installArgs[*]}\""

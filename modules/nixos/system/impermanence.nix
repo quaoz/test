@@ -2,7 +2,6 @@
   inputs,
   config,
   lib,
-  self,
   ...
 }: let
   inherit (config.garden.hardware) disks;
@@ -24,19 +23,19 @@ in {
     environment.persistence."/persist" = {
       hideMounts = true;
 
-      directories = lib.flatten[
+      directories = lib.flatten [
         "/root"
         "/var/lib/bluetooth"
         "/var/lib/nixos"
         "/var/lib/systemd/coredump"
 
         # acme
-        (lib.optionals (config.security.acme.acceptTerms) [
+        (lib.optionals (config.security.acme.acceptTerms || config.security.acme.certs != {}) [
           "/var/lib/acme"
         ])
 
         # networkmanager
-        (lib.optionals (config.networking.networkmanager.enable) [
+        (lib.optionals config.networking.networkmanager.enable [
           "/etc/NetworkManager/system-connections"
         ])
       ];
@@ -46,12 +45,12 @@ in {
         "/etc/machine-id"
 
         # ssh keys
-        (lib.optionals (config.services.openssh.enable) (
+        (lib.optionals config.services.openssh.enable (
           builtins.map (x: [x.path (x.path + ".pub")]) config.services.openssh.hostKeys
         ))
 
         # networkmanager
-        (lib.optionals (config.networking.networkmanager.enable) [
+        (lib.optionals config.networking.networkmanager.enable [
           "/var/lib/NetworkManager/secret_key"
           "/var/lib/NetworkManager/seen-bssids"
           "/var/lib/NetworkManager/timestamps"
