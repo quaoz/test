@@ -7,8 +7,8 @@
     execWheelOnly = true;
 
     # shush
-    extraConfig = ''
-      Defaults lecture = "never"
-    '';
+    #extraConfig = ''
+    #  Defaults lecture = "never"
+    #'';
   };
 }
