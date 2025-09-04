@@ -10,7 +10,7 @@
   hosts =
     self.nixosConfigurations
     // self.darwinConfigurations
-    |> lib.filterAttrs (_: v: v.config.services.openssh.enable)
+    |> lib.filterAttrs (_: v: v.config.services.openssh.enable == true)
     |> builtins.mapAttrs (n: _: {
       ${n} = {
         match = "user ${username} host ${n}";
