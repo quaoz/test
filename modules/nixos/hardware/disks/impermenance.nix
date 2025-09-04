@@ -12,46 +12,56 @@ in {
       "/var/log".neededForBoot = true;
     };
 
-    boot.initrd.postResumeCommands = lib.mkAfter ''
-      (
-          set -euo pipefail
+    boot.initrd.systemd.services.btrfs-impermanence = {
+      description = "restore blank root snapshot";
 
-          timeout=0
-          udevadm settle || true
+      wantedBy = ["initrd.target"];
+      before = ["sysroot.mount"];
 
-          # wait for device to be avaliavble
-          while [[ ! -b ${rootPart} ]] && ((timeout++ < 60)); do
-              echo "[impermanence] waiting for ${rootPart} ($timeout/60)…"
-              sleep 1
-              udevadm settle || true
-          done
+      unitConfig.DefaultDependencies = "no";
+      serviceConfig.Type = "oneshot";
 
-          # mount device
-          mnt=$(mktemp -d)
-          mount -o subvol=/ "${rootPart}" "$mnt"
+      script = ''
+        (
+            set -euo pipefail
 
-          front=0
-          queue=("$mnt/root")
+            timeout=0
+            udevadm settle || true
 
-          # find all subvolumes
-          while ((''${#queue[@]} > front)); do
-              while IFS= read -r subvol; do
-                  queue+=("$mnt/$subvol")
-              done < <(btrfs subvolume list -o "''${queue[front++]}" | cut -f9 -d' ')
-          done
+            # wait for device to be avaliavble
+            while [[ ! -b ${rootPart} ]] && ((timeout++ < 60)); do
+                echo "[impermanence] waiting for ${rootPart} ($timeout/60)…"
+                sleep 1
+                udevadm settle || true
+            done
 
-          # remove subvolumes
-          while ((front-- > 0)); do
-              echo "[impermanence] deleting subvolume ''${queue[$front]}"
-              btrfs subvolume delete "''${queue[$front]}"
-          done
+            # mount device
+            mnt=$(mktemp -d)
+            mount -o subvol=/ "${rootPart}" "$mnt"
 
-          echo "[impermanence] restoring blank snapshot"
-          btrfs subvolume snapshot "$mnt/root-blank" "$mnt/root"
+            front=0
+            queue=("$mnt/root")
 
-          umount "$mnt"
-          rm -rf "$mnt"
-      ) || echo "[impermanence] wipe failed — continuing boot"
-    '';
+            # find all subvolumes
+            while ((''${#queue[@]} > front)); do
+                while IFS= read -r subvol; do
+                    queue+=("$mnt/$subvol")
+                done < <(btrfs subvolume list -o "''${queue[front++]}" | cut -f9 -d' ')
+            done
+
+            # remove subvolumes
+            while ((front-- > 0)); do
+                echo "[impermanence] deleting subvolume ''${queue[$front]}"
+                btrfs subvolume delete "''${queue[$front]}"
+            done
+
+            echo "[impermanence] restoring blank snapshot"
+            btrfs subvolume snapshot "$mnt/root-blank" "$mnt/root"
+
+            umount "$mnt"
+            rm -rf "$mnt"
+        ) || echo "[impermanence] wipe failed — continuing boot"
+      '';
+    };
   };
 }
