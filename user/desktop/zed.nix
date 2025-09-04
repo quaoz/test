@@ -74,7 +74,7 @@ in {
             formatter = {
               external = {
                 command = "${lib.getExe pkgs.alejandra}";
-                arguments = ["--" "--quiet"];
+                arguments = ["--quiet"];
               };
             };
           };
