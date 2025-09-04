@@ -8,7 +8,7 @@
 
     # shush
     extraConfig = ''
-      Defaults lecture = false
+      Defaults lecture = "never"
     '';
   };
 }
