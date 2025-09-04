@@ -104,4 +104,4 @@ Before installing you probably want to rekey your secrets and check the hardware
 
 When you are ready to install, run the following command:
 EOF
-gum format --type code --language sh "nixos-install --flake \"$FLAKE_URL#$hostname\" \"${installArgs[*]}\""
+gum format --type code --language sh "nixos-install --flake \"$FLAKE_URL#$hostname\" ${installArgs[*]}"

@@ -13,7 +13,7 @@ in {
 
   config = {
     # enable wireless database
-    hardware.wirelessRegulatoryDatabase = cfg.enable;
+    hardware.wirelessRegulatoryDatabase = lib.mkForce cfg.enable;
 
     networking = {
       # use iwd as the wifi backend
@@ -25,7 +25,7 @@ in {
 
         # use iwd instead
         iwd = {
-          inherit (cfg) enable;
+          enable = lib.mkForce cfg.enable;
 
           # https://git.kernel.org/pub/scm/network/wireless/iwd.git/tree/src/iwd.network.rst
           # https://www.mankier.com/5/iwd.config
